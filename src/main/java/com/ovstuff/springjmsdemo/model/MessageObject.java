@@ -44,4 +44,14 @@ public class MessageObject implements Serializable {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "MessageObject{" +
+                "uuid='" + uuid + '\'' +
+                ", timeStamp=" + timeStamp.toString() +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                '}';
+    }
 }

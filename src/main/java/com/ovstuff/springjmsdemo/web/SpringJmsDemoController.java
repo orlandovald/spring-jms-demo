@@ -29,7 +29,7 @@ public class SpringJmsDemoController {
     }
 
     @RequestMapping(value = "/jms/put", method = RequestMethod.GET)
-    public String putMessage() {
+    public MessageObject putMessage() {
 
         String uuid = UUID.randomUUID().toString();
 
@@ -41,7 +41,7 @@ public class SpringJmsDemoController {
 
         jmsSender.sendMessage(msgObj);
 
-        return "Msg submitted: " + uuid;
+        return msgObj;
     }
 
 }

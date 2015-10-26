@@ -6,7 +6,7 @@
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/jms
-       http://www.springframework.org/schema/beans/spring-jsm.xsd">
+       http://www.springframework.org/schema/jms/spring-jms.xsd">
 
     <bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
         <property name="environment">
@@ -49,5 +49,19 @@
     <bean id="jmsSender" class="com.ovstuff.springjmsdemo.jms.JmsSender">
         <constructor-arg ref="jmsTemplate" />
     </bean>
+
+    <bean id="sampleMessageListener"
+          class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+        <constructor-arg>
+            <bean class="com.ovstuff.springjmsdemo.mdp.MdpSample"/>
+        </constructor-arg>
+        <property name="messageConverter"><null /></property>
+    </bean>
+
+    <jms:listener-container connection-factory="connectionFactory"
+                            destination-resolver="destinationResolver"
+                            concurrency="2" acknowledge="client">
+        <jms:listener destination="SPRING_JMS_DEMO.Q" ref="sampleMessageListener"/>
+    </jms:listener-container>
 
 </beans>
