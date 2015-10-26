@@ -1,13 +1,15 @@
-package com.ovstuff.springjmsdemo.web.controller;
+package com.ovstuff.springjmsdemo.web;
 
+import com.ovstuff.springjmsdemo.jms.JmsSender;
+import com.ovstuff.springjmsdemo.model.MessageObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Calendar;
 import java.util.UUID;
 
 /**
@@ -19,7 +21,7 @@ public class SpringJmsDemoController {
     private static final Logger log = LoggerFactory.getLogger(SpringJmsDemoController.class);
 
     @Autowired
-    JmsTemplate jmsTemplate;
+    JmsSender jmsSender;
 
     @RequestMapping(value = "/ping/pong", method = RequestMethod.GET)
     public String ping() {
@@ -31,8 +33,13 @@ public class SpringJmsDemoController {
 
         String uuid = UUID.randomUUID().toString();
 
-        jmsTemplate.convertAndSend("Message with id of " + uuid);
-        log.debug("Message sent: " + uuid);
+        MessageObject msgObj = new MessageObject();
+        msgObj.setUuid(uuid);
+        msgObj.setPrice(15.43);
+        msgObj.setQuantity(10001L);
+        msgObj.setTimeStamp(Calendar.getInstance());
+
+        jmsSender.sendMessage(msgObj);
 
         return "Msg submitted: " + uuid;
     }

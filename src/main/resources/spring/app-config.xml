@@ -46,4 +46,8 @@
         <property name="pubSubDomain" value="false"/>
     </bean>
 
+    <bean id="jmsSender" class="com.ovstuff.springjmsdemo.jms.JmsSender">
+        <constructor-arg ref="jmsTemplate" />
+    </bean>
+
 </beans>
